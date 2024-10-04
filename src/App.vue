@@ -104,57 +104,37 @@
             Aqui estão alguns dos projetos que ajudamos a transformar em
             realidade:
           </p>
-          <v-row>
-            <v-col cols="12" md="4">
-              <v-card elevation="2">
-                <v-img
-                  src="https://via.placeholder.com/400x300"
-                  alt="Projeto 1"
-                ></v-img>
-                <v-card-title>Website Corporativo XYZ</v-card-title>
-                <v-card-text>
-                  Desenvolvimento completo do site com foco em SEO e design
-                  responsivo para ampliar a presença online da empresa XYZ.
-                </v-card-text>
-              </v-card>
-            </v-col>
-            <v-col cols="12" md="4">
-              <v-card elevation="2">
-                <v-img
-                  src="https://via.placeholder.com/400x300"
-                  alt="Projeto 2"
-                ></v-img>
-                <v-card-title>Aplicativo de Gestão Financeira ABC</v-card-title>
-                <v-card-text>
-                  Aplicativo mobile com design intuitivo e usabilidade avançada,
-                  permitindo uma gestão eficiente de finanças pessoais.
-                </v-card-text>
-              </v-card>
-            </v-col>
-            <v-col cols="12" md="4">
-              <v-card elevation="2">
-                <v-img
-                  src="https://via.placeholder.com/400x300"
-                  alt="Projeto 3"
-                ></v-img>
-                <v-card-title>Identidade Visual para Startup DEF</v-card-title>
-                <v-card-text>
-                  Criação de logotipo, paleta de cores e materiais de marketing
-                  para a startup DEF, destacando-se no mercado de inovação.
-                </v-card-text>
-              </v-card>
-            </v-col>
-          </v-row>
+
+          <v-carousel hide-delimiters height="400" cycle>
+            <v-carousel-item
+              v-for="(group, index) in projectGroups"
+              :key="index"
+            >
+              <v-row>
+                <v-col
+                  cols="12"
+                  md="4"
+                  v-for="(project, idx) in group"
+                  :key="idx"
+                >
+                  <v-card elevation="2" class="mx-auto" max-width="400">
+                    <v-img :src="project.image" height="200"></v-img>
+                    <v-card-title>{{ project.title }}</v-card-title>
+                    <v-card-text>{{ project.description }}</v-card-text>
+                  </v-card>
+                </v-col>
+              </v-row>
+            </v-carousel-item>
+          </v-carousel>
         </v-container>
       </section>
-
       <v-footer
         color="#24004b"
         class="d-flex align-center white--text justify-center"
       >
         <div class="text-center">
           Feito com 💜 por SAYTEK
-          <v-icon color="red">mdi-heart</v-icon>
+          <v-icon>mdi</v-icon>
           Copyright © 2024 Todos os direitos reservados
         </div>
       </v-footer>
@@ -164,7 +144,7 @@
 
 <script>
 import { ref } from 'vue';
-
+import { computed } from 'vue';
 export default {
   setup() {
     const title = ref('Consultoria de TI e Design');
@@ -175,6 +155,52 @@ export default {
       logo: 'https://github.com/user-attachments/assets/a04b8105-7a0c-4725-8c40-66410c830e4e',
       social_cover:
         'https://cdn.pixabay.com/photo/2021/11/11/09/12/lighthouse-6785763_1280.jpg',
+    });
+    const projects = ref([
+      {
+        title: 'Website Corporativo XYZ',
+        description:
+          'Desenvolvimento completo do site com foco em SEO e design responsivo para ampliar a presença online da empresa XYZ.',
+        image: 'https://via.placeholder.com/400x300',
+      },
+      {
+        title: 'Aplicativo de Gestão Financeira ABC',
+        description:
+          'Aplicativo mobile com design intuitivo e usabilidade avançada, permitindo uma gestão eficiente de finanças pessoais.',
+        image: 'https://via.placeholder.com/400x300',
+      },
+      {
+        title: 'Identidade Visual para Startup DEF',
+        description:
+          'Criação de logotipo, paleta de cores e materiais de marketing para a startup DEF, destacando-se no mercado de inovação.',
+        image: 'https://via.placeholder.com/400x300',
+      },
+      {
+        title: 'E-commerce para Empresa GHI',
+        description:
+          'Desenvolvimento de plataforma e-commerce para impulsionar as vendas online com uma experiência de usuário aprimorada.',
+        image: 'https://via.placeholder.com/400x300',
+      },
+      {
+        title: 'Plataforma de Educação Online JKL',
+        description:
+          'Desenvolvemos uma plataforma intuitiva para cursos online, aumentando o engajamento de alunos e instrutores.',
+        image: 'https://via.placeholder.com/400x300',
+      },
+      {
+        title: 'Aplicativo de Saúde MNO',
+        description:
+          'Aplicativo desenvolvido para monitoramento de saúde e agendamento de consultas de forma prática e ágil.',
+        image: 'https://via.placeholder.com/400x300',
+      },
+    ]);
+
+    const projectGroups = computed(() => {
+      const groups = [];
+      for (let i = 0; i < projects.value.length; i += 3) {
+        groups.push(projects.value.slice(i, i + 3));
+      }
+      return groups;
     });
 
     const email = ref('');
@@ -197,6 +223,8 @@ export default {
       emailRules,
       subscribed,
       subscribe,
+      projects,
+      projectGroups,
     };
   },
 };
